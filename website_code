@@ -1,0 +1,154 @@
+import React, { useState } from 'react';
+import { Card, CardContent } from "@/components/ui/card";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
+
+export default function ChefAshleySite() {
+  const [submitted, setSubmitted] = useState(false);
+  const [form, setForm] = useState({
+    allergy: '',
+    cuisine: '',
+    mealTime: '',
+    partySize: '',
+    budget: ''
+  });
+
+  const handleChange = (field, value) => {
+    setForm(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleSubmit = () => {
+    setSubmitted(true);
+  };
+
+  const mealPlan = `🍴 Based on your choices:
+- Dietary: ${form.allergy}
+- Cuisine: ${form.cuisine}
+- Meal: ${form.mealTime}
+- Serving: ${form.partySize}
+- Budget: ${form.budget}
+
+🎉 Here's a meal plan for you:
+👉 Starter: ${form.cuisine} inspired fresh salad with ${form.allergy !== 'None' ? form.allergy : 'a zesty vinaigrette'}
+👉 Main Course: ${form.mealTime}-style ${form.cuisine} dish, customized for ${form.allergy !== 'None' ? form.allergy.toLowerCase() : 'your taste'}
+👉 Dessert: ${form.cuisine} fusion fruit parfait`;
+
+  return (
+    <div className="bg-white text-gray-900">
+      <header className="bg-black text-white py-6 px-4 text-center">
+        <h1 className="text-4xl font-bold">Chef Ashley Gibson</h1>
+        <p className="text-lg mt-2">Modern. Bold. Inspired.</p>
+      </header>
+
+      <motion.div className="relative max-w-6xl mx-auto mt-6 rounded-xl overflow-hidden shadow-lg">
+        <img src="/chef-ashley-profile.png" alt="Chef Ashley Gibson" className="w-full object-cover h-[450px]" />
+        <div className="absolute bottom-0 bg-black bg-opacity-60 w-full text-white text-center py-3 text-md">
+          🎥 "I know there are TONS of videos out... but Chef Ashley's flavor is different!"
+        </div>
+      </motion.div>
+
+      <main className="max-w-6xl mx-auto p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+        <section className="space-y-6">
+          <Card>
+            <CardContent className="p-6">
+              <h2 className="text-2xl font-semibold mb-4">👩🏽‍🍳 About Me</h2>
+              <p>
+                Hi, I'm <strong>Ashley Gibson</strong> from <strong>Houston, TX</strong>! I've been a professional Chef for over 10 years and love teaching high school culinary students.<br />
+                Catch me on <strong>ATK Next Generation - Season 2</strong> now on Prime!
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6">
+              <h2 className="text-2xl font-semibold mb-4">📱 Connect with Me</h2>
+              <ul className="list-disc list-inside space-y-2">
+                <li>Instagram: @chefashleygibson</li>
+                <li>TikTok: @ashgibcooks</li>
+                <li>YouTube: Chef Ashley’s Kitchen</li>
+              </ul>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6">
+              <h2 className="text-2xl font-semibold mb-4">📅 Booking & Inquiries</h2>
+              <p>
+                Want to book me for private events, speaking engagements, or cooking classes?<br />
+                Email: <a href="mailto:bookashley@culinaryvibes.com" className="text-blue-600 underline">bookashley@culinaryvibes.com</a>
+              </p>
+            </CardContent>
+          </Card>
+        </section>
+
+        <section>
+          <Card>
+            <CardContent className="space-y-4 p-6">
+              <h2 className="text-2xl font-semibold">🍽️ Build Your Meal Plan</h2>
+              <Select onValueChange={value => handleChange('allergy', value)}>
+                <SelectTrigger><SelectValue placeholder="Any dietary restrictions?" /></SelectTrigger>
+                <SelectContent>
+                  {['None', 'Vegan', 'Vegetarian', 'Gluten Free', 'Meat Eater', 'Other'].map(option => (
+                    <SelectItem key={option} value={option}>{option}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              <Select onValueChange={value => handleChange('cuisine', value)}>
+                <SelectTrigger><SelectValue placeholder="Cuisine type?" /></SelectTrigger>
+                <SelectContent>
+                  {['American', 'Soul Food', 'Italian', 'Mexican', 'Indian', 'Asian', 'Mediterranean', 'Middle Eastern'].map(option => (
+                    <SelectItem key={option} value={option}>{option}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              <Select onValueChange={value => handleChange('mealTime', value)}>
+                <SelectTrigger><SelectValue placeholder="Meal time?" /></SelectTrigger>
+                <SelectContent>
+                  {['Breakfast', 'Brunch', 'Lunch', 'Dinner'].map(option => (
+                    <SelectItem key={option} value={option}>{option}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              <Select onValueChange={value => handleChange('partySize', value)}>
+                <SelectTrigger><SelectValue placeholder="Party size?" /></SelectTrigger>
+                <SelectContent>
+                  {['1-2 people', '2-4 people', '4-8 people', '10+ people'].map(option => (
+                    <SelectItem key={option} value={option}>{option}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              <Select onValueChange={value => handleChange('budget', value)}>
+                <SelectTrigger><SelectValue placeholder="Budget?" /></SelectTrigger>
+                <SelectContent>
+                  {['$50 or less', '$50 - $100', '$100 - $200', '$200+'].map(option => (
+                    <SelectItem key={option} value={option}>{option}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              <Button onClick={handleSubmit} className="w-full">Get My Meal Plan</Button>
+            </CardContent>
+          </Card>
+
+          {submitted && (
+            <motion.div 
+              className="mt-6 bg-green-100 p-4 rounded-xl shadow"
+              initial={{ opacity: 0 }} 
+              animate={{ opacity: 1 }}>
+              <pre className="whitespace-pre-wrap text-sm">{mealPlan}</pre>
+            </motion.div>
+          )}
+        </section>
+      </main>
+
+      <footer className="bg-black text-white text-center py-6 mt-10">
+        <p>&copy; {new Date().getFullYear()} Chef Ashley Gibson. All rights reserved.</p>
+      </footer>
+    </div>
+  );
+}
